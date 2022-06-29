@@ -1,0 +1,9 @@
+version: '2.6'
+services:
+
+  api:
+    image: thuydx/nginx:latest
+    volumes:
+      - .:/var/www/html/
+    expose:
+      - "80"

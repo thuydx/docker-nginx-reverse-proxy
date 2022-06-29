@@ -1,0 +1,9 @@
+version: '2.6'
+services:
+
+  cms:
+    image: nginx:stable-alpine
+    volumes:
+      - .:/usr/share/nginx/html/
+    expose:
+      - "80"

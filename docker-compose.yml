@@ -1,0 +1,19 @@
+version: '2.6'
+services:
+  proxy:
+    build:
+      context: ./dockerfiles
+      dockerfile: ./nginx-reverse-proxy.dockerfile
+    networks:
+      - backend
+      - frontend
+    ports:
+      - 80:80
+
+networks:
+  backend:
+    name: backend_default
+    external: true
+  frontend:
+    name: frontend_default
+    external: true
