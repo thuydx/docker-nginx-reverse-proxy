@@ -1,6 +1,6 @@
 # nginx-reverse-proxy
 ```
-- nginx-reverse-proxy
++- nginx-reverse-proxy
 |-backend-app
 | + src
 | + vendor
