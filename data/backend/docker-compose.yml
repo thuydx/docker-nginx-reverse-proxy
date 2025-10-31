@@ -2,7 +2,7 @@ version: '2.6'
 services:
 
   api:
-    image: thuydx/nginx:latest
+    image: thuydx/nginx:1.8
     volumes:
       - .:/var/www/html/
     expose:
