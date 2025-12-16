@@ -1,4 +1,4 @@
-FROM nginx:1.25
+FROM nginx:1.26
 
 # Remove default config
 RUN rm /etc/nginx/conf.d/default.conf
