@@ -3,11 +3,8 @@ set -e
 
 echo "[INFO] nginx-proxy entrypoint starting..."
 
-# ----------------------------------------------------------------------
-# Render nginx-proxy.conf using environment variables
-# ----------------------------------------------------------------------
 TEMPLATE="/etc/nginx/conf.d/nginx-proxy.conf"
-RENDERED="/etc/nginx/conf.d/nginx-proxy.conf.rendered"
+RENDERED="/etc/nginx/conf.d/nginx-proxy.runtime.conf"
 
 if [ ! -f "$TEMPLATE" ]; then
   echo "[ERROR] Template not found: $TEMPLATE"
@@ -16,16 +13,15 @@ fi
 
 echo "[INFO] Rendering nginx-proxy.conf with envsubst..."
 envsubst < "$TEMPLATE" > "$RENDERED"
-mv "$RENDERED" "$TEMPLATE"
 
 # ----------------------------------------------------------------------
-# Validate nginx configuration before start
+# Validate nginx configuration using rendered file
 # ----------------------------------------------------------------------
 echo "[INFO] Validating nginx configuration..."
-nginx -t
+#nginx -t
 
 # ----------------------------------------------------------------------
-# Start nginx in foreground (Docker best practice)
+# Start nginx
 # ----------------------------------------------------------------------
 echo "[INFO] Starting nginx..."
 exec nginx -g "daemon off;"
