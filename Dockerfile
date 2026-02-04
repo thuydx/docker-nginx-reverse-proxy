@@ -4,24 +4,28 @@ LABEL maintainer="Thuy Dinh <thuydx@zendgroup.vn>" \
       author="Thuy Dinh" \
       description="Nginx reverse proxy"
 
-# Remove default config
-RUN rm /etc/nginx/conf.d/default.conf
+# Remove default nginx config (safe)
+RUN rm -f /etc/nginx/conf.d/default.conf
 
-# Copy main config
+# Copy global nginx config
 COPY ./config/nginx.conf /etc/nginx/nginx.conf
 
-# Copy proxy settings (shared include)
+# Copy proxy shared settings
 COPY ./config/nginx.proxy.settings /etc/nginx/nginx.proxy.settings
 
-# Copy reverse proxy config
+# Copy reverse proxy vhost template
 COPY ./config/nginx-proxy.conf /etc/nginx/conf.d/nginx-proxy.conf
 
 # ---- Internal CA (mkcert / internal TLS) ----
 COPY ./config/ssl/rootCA.pem /usr/local/share/ca-certificates/mkcert-rootCA.crt
 RUN update-ca-certificates
 
-# Expose public HTTP port
-EXPOSE 80
+# Entrypoint (envsubst + nginx start)
+COPY ./entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# Run nginx in foreground (Docker best practice)
-CMD ["nginx", "-g", "daemon off;"]
+# Expose public ports
+EXPOSE 80 443
+
+# Entrypoint handles nginx startup
+ENTRYPOINT ["/entrypoint.sh"]
