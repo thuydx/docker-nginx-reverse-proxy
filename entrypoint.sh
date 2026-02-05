@@ -1,9 +1,12 @@
 #!/bin/sh
 set -e
 
+rm -rf /etc/nginx/conf.d/*
+rm -rf /etc/nginx/sites-enabled/*
+
 echo "[INFO] nginx-proxy entrypoint starting..."
 
-TEMPLATE="/etc/nginx/conf.d/nginx-proxy.conf"
+TEMPLATE="/etc/nginx/templates/nginx-proxy.conf"
 RENDERED="/etc/nginx/conf.d/nginx-proxy.runtime.conf"
 
 if [ ! -f "$TEMPLATE" ]; then
@@ -18,7 +21,7 @@ envsubst < "$TEMPLATE" > "$RENDERED"
 # Validate nginx configuration using rendered file
 # ----------------------------------------------------------------------
 echo "[INFO] Validating nginx configuration..."
-#nginx -t
+nginx -t
 
 # ----------------------------------------------------------------------
 # Start nginx
